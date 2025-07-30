@@ -1,2 +1,2 @@
-scapy
+scapy>=2.4
 tqdm

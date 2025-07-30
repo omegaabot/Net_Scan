@@ -1,10 +1,9 @@
-# Python
 __pycache__/
 *.pyc
-
-# Virtual Environment
-venv/
+*.pyo
+*.pyd
 env/
-
-# Output files
-*.csv
+*.env
+*.venv
+.DS_Store
+scan_results.csv

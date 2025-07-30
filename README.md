@@ -1,106 +1,165 @@
-# **📡 Concurrent Network Discovery and Port Scanner**
+# 📡 Concurrent Network Discovery and Port Scanner
 
-A simple and efficient command-line tool written in Python to discover active devices on a local network and scan them for open TCP ports. This project uses multithreading for fast and concurrent port scanning.
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
+![MIT License](https://img.shields.io/github/license/omegaabot/Net_Scan)
+![Last Commit](https://img.shields.io/github/last-commit/omegaabot/Net_Scan)
+![Issues](https://img.shields.io/github/issues/omegaabot/Net_Scan)
 
-## **📋 Table of Contents**
+A simple and efficient command-line tool written in Python to discover active devices on a local network and scan them for open TCP ports. Multithreaded for fast, concurrent scanning!
 
-* [✨ Key Features](https://www.google.com/search?q=%23-key-features)  
-* [🛠️ How It Works](https://www.google.com/search?q=%23%EF%B8%8F-how-it-works)  
-* [📁 Project Structure](https://www.google.com/search?q=%23-project-structure)  
-* [⚙️ Installation & Usage](https://www.google.com/search?q=%23%EF%B8%8F-installation--usage)  
-* [📊 Sample Output](https://www.google.com/search?q=%23-sample-output)  
-* [📄 License](https://www.google.com/search?q=%23-license)
+---
 
-## **✨ Key Features**
+## 📋 Table of Contents
 
-* **Device Discovery:** Identifies all responsive hosts on a local subnet using ARP requests.  
-* **Concurrent Port Scanning:** Leverages a ThreadPoolExecutor to scan multiple ports simultaneously, significantly reducing scan times.  
-* **Flexible Scan Options:** Provides quick, full, and custom scan modes to suit different needs.  
-* **Data Export:** Automatically saves all scan results to a scan\_results.csv file for logging and analysis.  
-* **User-Friendly Interface:** A clean CLI with progress bars for a clear user experience.
+- [✨ Key Features](#-key-features)
+- [⚡ Quick Start](#-quick-start)
+- [🛠️ How It Works](#-how-it-works)
+- [📁 Project Structure](#-project-structure)
+- [⚙️ Installation & Usage](#️-installation--usage)
+- [📊 Sample Output](#-sample-output)
+- [🤝 Contributing](#-contributing)
+- [👤 About the Author](#-about-the-author)
+- [🚀 Future Features / TODO](#-future-features--todo)
+- [📄 License](#-license)
 
-## **🛠️ How It Works**
+---
 
-The tool operates in two distinct phases, using powerful Python libraries to achieve its goals.
+## ✨ Key Features
 
-### **1\. Device Discovery (ARP Scan)**
+- **Device Discovery:** Identifies all responsive hosts on a local subnet using ARP requests.
+- **Concurrent Port Scanning:** Uses a ThreadPoolExecutor for super-fast, simultaneous port scans.
+- **Flexible Scan Options:** Quick, full, and custom scan modes for any situation.
+- **Data Export:** Saves all scan results to `scan_results.csv` for easy analysis.
+- **User-Friendly CLI:** Progress bars and prompts for a smooth user experience.
 
-The discovery phase uses the **Scapy** library to find live hosts.
+---
 
-* An **ARP request** packet (ARP(pdst=target\_ip)) is crafted.  
-* This packet is wrapped in an **Ethernet frame** with the destination MAC address set to ff:ff:ff:ff:ff:ff, which is the broadcast address. This ensures all devices on the local network receive the packet.  
-* Scapy's srp() function sends the packet and listens for ARP replies.  
-* Devices that are online will respond, and the script collects their IP and MAC addresses.
+## ⚡ Quick Start
 
-### **2\. Port Scanning (TCP Connect Scan)**
+```bash
+git clone https://github.com/omegaabot/Net_Scan.git
+cd Net_Scan
+python -m venv env
+source env/bin/activate   # On Windows use `env\Scripts\activate`
+pip install -r requirements.txt
+sudo python3 net_scan.py   # On Linux/macOS
+# or
+python net_scan.py         # On Windows (run as Administrator)
+```
 
-The scanning phase uses Python's built-in **socket** library and **concurrent.futures** module.
+---
 
-* For each discovered IP, a ThreadPoolExecutor is initialized to manage a pool of worker threads. This allows us to check many ports at once.  
-* The socket.connect\_ex((ip, port)) method is used to attempt a connection. This method is non-blocking and returns 0 on success, indicating an **open port**.  
-* This approach is reliable and doesn't require the elevated privileges that a more advanced SYN scan would need (though the ARP scan still does).
+## 🛠️ How It Works
 
-## **📁 Project Structure**
+### 1. Device Discovery (ARP Scan)
 
-The repository is organized to be clean and easy to navigate.
+- Scapy crafts an **ARP request** and broadcasts it on the local subnet.
+- Collects ARP replies to detect live devices (IP & MAC).
 
-network-scanner-project/  
-├── .gitignore          \# Tells Git which files to ignore  
-├── LICENSE             \# Project's license file (MIT)  
-├── README.md           \# This file\!  
-├── requirements.txt    \# Lists Python dependencies  
-└── scanner.py          \# The main application script
+### 2. Port Scanning (TCP Connect Scan)
 
-## **⚙️ Installation & Usage**
+- For each discovered IP, uses a thread pool for fast, concurrent scans.
+- Attempts to connect to each port; reports open services.
 
-Follow these steps to get the scanner running on your machine. Administrative privileges are required.
+---
 
-### **Clone the Repository**
+## 📁 Project Structure
 
-git clone \[https://github.com/your-username/your-repo-name.git\](https://github.com/your-username/your-repo-name.git)  
-cd your-repo-name
+```
+Net_Scan/
+├── .gitignore
+├── LICENSE
+├── README.md
+├── requirements.txt
+├── net_scan.py
+├── tests/
+│   └── test_net_scan.py
+```
 
-### **Install Dependencies**
+---
 
-It's recommended to use a virtual environment.
+## ⚙️ Installation & Usage
 
-\# Create and activate a virtual environment (optional but recommended)  
-python \-m venv env  
-source env/bin/activate  \# On Windows use \`env\\Scripts\\activate\`
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/omegaabot/Net_Scan.git
+   cd Net_Scan
+   ```
 
-\# Install required packages  
-pip install \-r requirements.txt
+2. **Install Dependencies**
+   ```bash
+   python -m venv env
+   source env/bin/activate   # On Windows: env\Scripts\activate
+   pip install -r requirements.txt
+   ```
 
-### **Run the Scanner**
+3. **Run the Scanner**
+   - **Linux/macOS:**  
+     `sudo python3 net_scan.py`
+   - **Windows:**  
+     Open as Administrator and run:  
+     `python net_scan.py`
 
-**On Linux/macOS:**
+4. **Follow Prompts:**  
+   Enter the target subnet and choose the scan type.
 
-sudo python3 scanner.py
+---
 
-On Windows:  
-Open Command Prompt or PowerShell as an Administrator and run:  
-python scanner.py
+## 📊 Sample Output
 
-**Follow Prompts:** The application will then prompt you to enter the target subnet and choose a scan type.
+```text
+[*] Simple Network Scanner
 
-## **📊 Sample Output**
+Enter target subnet (e.g., 192.168.1.0/24): 192.168.1.0/24
+[*] Quick scan selected.
+[✔] Discovered 3 devices.
 
-\[\*\] Simple Network Scanner
+Scanning hosts for open ports...
 
-Enter target subnet (e.g., 192.168.1.0/24): 192.168.1.0/24  
-...  
-\[✔\] Scan Complete. Results:  
-\=========================  
-  IP: 192.168.1.1 (a1:b2:c3:d4:e5:f6)  
-  Open Ports: 53, 80, 443
+192.168.1.1 (a1:b2:c3:d4:e5:f6): [53, 80, 443]
+192.168.1.102 (a2:b3:c4:d5:e6:f7): [8080]
+192.168.1.105 (a3:b4:c5:d6:e7:f8): []
 
-  IP: 192.168.1.102 (a2:b3:c4:d5:e6:f7)  
-  Open Ports: 8080
+[✔] Results also saved to scan_results.csv
+```
 
-\[✔\] Results also saved to scan\_results.csv
+---
 
-## **📄 License**
+## 🤝 Contributing
 
-This project is licensed under the MIT License.
+Contributions, issues, and feature requests are welcome!
 
-Copyright (c) 2025 Aditya raj
+- Fork the repo
+- Create your feature branch (`git checkout -b feature/AmazingFeature`)
+- Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+- Push to the branch (`git push origin feature/AmazingFeature`)
+- Open a Pull Request
+
+---
+
+## 👤 About the Author
+
+**Aditya Raj**  
+- 🛡️ Cybersecurity Enthusiast
+- 🐍 Python Developer
+- [LinkedIn](https://www.linkedin.com/in/aditya-raj-516801256/) | [GitHub](https://github.com/omegaabot)
+
+> “I’m still learning, but I’m building every day — one project at a time.”
+
+---
+
+## 🚀 Future Features / TODO
+
+- [ ] Add UDP port scanning
+- [ ] Add OS fingerprinting
+- [ ] Export results in JSON format
+- [ ] Web-based UI
+- [ ] Scheduled/automated scans
+- [ ] Improved error handling and reporting
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.  
+Copyright (c) 2025 Aditya Raj
