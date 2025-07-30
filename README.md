@@ -1,11 +1,11 @@
-# 📡 Concurrent Network Discovery and Port Scanner
+# 📡 Net_Scan: Concurrent Network Discovery and Port Scanner
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)
 ![MIT License](https://img.shields.io/github/license/omegaabot/Net_Scan)
 ![Last Commit](https://img.shields.io/github/last-commit/omegaabot/Net_Scan)
 ![Issues](https://img.shields.io/github/issues/omegaabot/Net_Scan)
 
-A simple and efficient command-line tool written in Python to discover active devices on a local network and scan them for open TCP ports. Multithreaded for fast, concurrent scanning!
+A blazing-fast Python tool that finds every gadget on your network and scans their ports—like a digital game of hide and seek! Discover, scan, export, done. Perfect for curious minds, sysadmins, and anyone who loves a little network magic. 🚀
 
 ---
 
@@ -72,9 +72,10 @@ Net_Scan/
 ├── README.md
 ├── requirements.txt
 ├── net_scan.py
-├── tests/
-│   └── test_net_scan.py
 ```
+
+> *Tip:*  
+> If you plan to write tests, add a `/tests` folder.
 
 ---
 
@@ -111,18 +112,25 @@ Net_Scan/
 [*] Simple Network Scanner
 
 Enter target subnet (e.g., 192.168.1.0/24): 192.168.1.0/24
+
+--- Port Scan Options ---
+q - Quick scan of common ports
+f - Full scan of all 65,535 ports (very slow)
+c - Custom scan of user-specified ports
+Enter your choice [q]: q
 [*] Quick scan selected.
-[✔] Discovered 3 devices.
+[INFO] Discovering devices on 192.168.1.0/24...
+[INFO] Discovered 3 device(s).
 
 Scanning hosts for open ports...
 
+Scanning hosts: 100%|██████████████████████████████████| 3/3 [00:02<00:00,  1.50it/s]
 192.168.1.1 (a1:b2:c3:d4:e5:f6): [53, 80, 443]
 192.168.1.102 (a2:b3:c4:d5:e6:f7): [8080]
 192.168.1.105 (a3:b4:c5:d6:e7:f8): []
 
 [✔] Results also saved to scan_results.csv
 ```
-
 ---
 
 ## 🤝 Contributing
